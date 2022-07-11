@@ -3,7 +3,7 @@ use warnings;
 use strict;
 use 5.010;
 
-package IterativeChopStrat;
+package ChopStrat;
 
 sub new {
   my $class = shift;
@@ -11,6 +11,19 @@ sub new {
   bless $self, $class;
   return $self
 }
+
+sub printDebug {
+  my $this = shift;
+  my ($low, $high) = @_;
+  if ($ENV{'DEBUG'} eq 'true') {
+    print "High: $high\n";
+    print "Low $low\n";
+    sleep 5;
+  }
+}
+
+package IterativeChopStrat;
+our @ISA = qw/ChopStrat/;
 
 sub chop {
   my $this = shift;
@@ -37,13 +50,34 @@ sub chop {
   }
 }
 
-sub printDebug {
+package RecursiveChopStrat;
+our @ISA = qw/ChopStrat/;
+
+sub chop {
   my $this = shift;
-  my ($low, $high) = @_;
-  if ($ENV{'DEBUG'} eq 'true') {
-    print "High: $high\n";
-    print "Low $low\n";
-    sleep 5;
+  my ($num, $nums_r) = @_; 
+  my @nums = @{$nums_r};
+  return -1 unless @nums;
+  my $high = scalar (@nums) - 1;
+  my $low = 0;
+  return $this->recurse($high, $low, $nums_r, $num);
+}
+
+sub recurse {
+  my $this = shift;
+  my ($high, $low, $nums_r, $num) = @_;
+  my @nums = @{$nums_r};
+  my $mid = int(($high + $low) / 2); 
+
+  $this->printDebug($low, $high);
+
+  if ($high == $low) {
+    return $nums[$low] == $num ? $low : -1;
+  }
+  given ($nums[$mid]) {
+    when ($_ == $num) {return $mid;}
+    when ($_ < $num) {return $this->recurse($high, $mid+1, $nums_r, $num);}
+    when ($_ > $num) {return $this->recurse($mid, $low, $nums_r, $num);}
   }
 }
 

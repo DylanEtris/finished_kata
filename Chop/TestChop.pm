@@ -2,7 +2,8 @@
 
 use Test::More;
 use lib qw /./;
-use Chop;
+use IterativeChopStrat;
+use RecursiveChopStrat;
 
 sub runTheGauntlet {
   my $chopStrat = $_[0];

@@ -4,6 +4,7 @@ use Test::More;
 use lib qw /./;
 use IterativeChopStrat;
 use RecursiveChopStrat;
+use SliceChopStrat;
 
 sub runTheGauntlet {
   my $chopStrat = $_[0];
@@ -30,10 +31,10 @@ sub runTheGauntlet {
   ok($chopStrat->chop(8, [1, 3, 5, 7]) == -1);
 }
 
-$ENV{'DEBUG'} = 'false';
 runTheGauntlet(IterativeChopStrat->new());
 
-$ENV{'DEBUG'} = 'false';
 runTheGauntlet(RecursiveChopStrat->new());
+
+runTheGauntlet(SliceChopStrat->new());
 
 done_testing();

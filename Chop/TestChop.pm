@@ -5,6 +5,7 @@ use lib qw /./;
 use IterativeChopStrat;
 use RecursiveChopStrat;
 use SliceChopStrat;
+use IterativeSliceChopStrat;
 
 sub runTheGauntlet {
   my $chopStrat = $_[0];
@@ -12,6 +13,7 @@ sub runTheGauntlet {
   ok($chopStrat->chop(3, [1]) == -1);
   ok($chopStrat->chop(1, [1]) == 0);
 
+  ok($chopStrat->chop(3, [1, 3]) == 1);
   ok($chopStrat->chop(1, [1, 3, 5]) == 0);
   ok($chopStrat->chop(3, [1, 3, 5]) == 1);
   ok($chopStrat->chop(5, [1, 3, 5]) == 2);
@@ -36,5 +38,7 @@ runTheGauntlet(IterativeChopStrat->new());
 runTheGauntlet(RecursiveChopStrat->new());
 
 runTheGauntlet(SliceChopStrat->new());
+
+runTheGauntlet(IterativeSliceChopStrat->new());
 
 done_testing();

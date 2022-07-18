@@ -1,0 +1,2 @@
+test:
+	./TestFriend.pm

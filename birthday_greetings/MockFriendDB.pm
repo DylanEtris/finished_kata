@@ -11,8 +11,8 @@ sub new {
 
 sub add {
   my $self = shift;
-  my ($friend) = @_;
-  $self->{_friends}->{$friend->getId()} = $friend;
+  my ($id, $friend) = @_;
+  $self->{_friends}->{$id} = $friend;
 }
 
 sub find {

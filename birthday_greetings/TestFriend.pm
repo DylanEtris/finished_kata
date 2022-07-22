@@ -11,8 +11,11 @@ use MockFriendDB;
 use MockMessagePreference;
 
 sub setup : Test(setup) {
-  my $f = Friend->new(0, 'Doe', 'Jane', $time, 'Jane.Doe@foobar.com');
-  shift->{_testFriend} = $f;
+  my $this = shift;
+  my $fid = 0;
+  my $f = Friend->new($fid, 'Doe', 'Jane', $time, 'Jane.Doe@foobar.com');
+  $this->{_testFriend} = $f;
+  $this->{_fid} = $fid;
 }
 
 sub testFriendData : Test(5) {
@@ -26,10 +29,11 @@ sub testFriendData : Test(5) {
 }
 
 sub testQueryFriends : Test {
+  my $this = shift;
+  my $f = $this->{_testFriend};
   my $time = localtime();
-  my $f = shift->{_testFriend};
   my $db = MockFriendDB->new();
-  $db->add($f);
+  $db->add($this->{_fid}, $f);
   my $result = $db->find(0);
   ok($result->getFName() eq 'Jane');
 }
@@ -37,9 +41,10 @@ sub testQueryFriends : Test {
 sub sendGreetingSendsGreeting : Test {
   my $f = shift->{_testFriend};
   my $mp = MockMessagePreference->new();
+  my $msg = "Hello there!";
   $f->addMessagePreference($mp);
-  $f->sendGreeting();
-  ok($mp->greetingSent() == 1);
+  $f->sendGreeting($msg);
+  ok($mp->greetingSent() eq $msg);
 }
 
 Test::Class->runtests();

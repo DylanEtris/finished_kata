@@ -1,22 +1,21 @@
-package MockMessagePreference;
+package MockIo;
 
 sub new {
   my $class = shift;
-  my $self = {
-  };
+  my $self = {};
   bless $self, $class;
   return $self;
 }
 
-sub send {
+sub write {
   my $self = shift;
   my ($msg) = @_;
-  $self->{_msg} = $msg;
+  $self->{_contents} = $msg;
 }
 
-sub greetingSent {
+sub read {
   my $self = shift;
-  return $self->{_msg};
+  return $self->{_contents};
 }
 
 return 1;

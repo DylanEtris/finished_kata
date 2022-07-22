@@ -51,7 +51,8 @@ sub addMessagePreference {
 
 sub sendGreeting {
   my $self = shift;
-  $self->{_mp}->send('');
+  my ($msg) = shift;
+  $self->{_mp}->send($msg);
 }
 
 return 1;
